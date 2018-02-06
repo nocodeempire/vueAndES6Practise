@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    [v-cloak]{
+      display: none;
+    }
+    .red{
+      background-color: red;
+    }
+    .blue{
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="msg">
+    <button v-on:click="start">开始</button>
+    <button v-on:click="stop">介绍</button>
+    <div v-cloak>{{msg}}</div>
+    <div>---------------</div>
+    <input type="checkbox" v-model="ischeck">
+    <input type="radio" name="sex" value="男" v-model="sex">
+    <input type="radio" name="sex" value="女" v-model="sex">
+  </div>
+
+  <!--表格数据练习-->
+  <div id="tableview">
+    <div v-for="(v,i) in 4" :key="i" :class="{red:i%2==0 ,blue:i%2!=0}">class背景色</div>
+    <div>
+      <input type="text" v-model="brandName">
+      <button @click="add">添加数据</button>
+    </div>
+    <div>
+      <input type="text" v-model="searchValue">
+      <button @click="search">搜索</button>
+    </div>
+    <table cellpadding=0 cellspacing=0 border=1>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>操作</th>
+      </tr>
+      <tr v-for="(item,index) in search()">
+        <td>{{item.id}}</td>
+        <td>{{item.brandName}}</td>
+        <td><button @click="del(item.id)">删除</button></td>
+      </tr>
+    </table>
+    <div>
+      <table>
+        <tr>
+          <td>序号</td>
+          <td>姓名</td>
+          <td>年龄</td>
+        </tr>
+        <tr v-for="item in items">
+          <td>{{item.id}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.age}}</td>
+        </tr>
+        <tr v-for="item in axiositems">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.age}}</td>
+      </tr>
+      </table>
+    </div>
+    <input type="text" v-model="num1">+<input type="text"  v-model="num2">=<span v-text="result"></span>
+  
+    <input type="text" v-model="firstname" v-focus>+<input type="text"  v-model="lastname">=<input type="text" v-model="fullname">
+    <!--自定义指令-->
+    <div v-mttext="msg"></div>
+    <button v-onevent:click.stop="decevent">触发自定义指令</button>
+    <!--过滤器-->
+    <div>{{nowdate | formattime}}</div>
+  </div>
+</body>
+<script src="node_modules/vue/dist/vue.js"></script>
+<!-- vue-resource支持跨域 -->
+<script src="node_modules/vue-resource/dist/vue-resource.js"></script>
+<!-- axios不支持跨域 -->
+<script src="node_modules/axios/dist/axios.js"></script>
+<!--moment-->
+<script src="node_modules/moment/moment.js"></script>
+<script>
+  Vue.directive("focus",{
+    inserted(el){
+      el.focus();
+    }
+  })
+  Vue.directive("mttext",{
+    bind(el,binding){
+      console.log(binding);
+      el.innerText=binding.value;
+    },
+    update(el,binding){
+      el.innerText=binding.value;
+    }
+  })
+  Vue.filter("formattime",function(v){
+    return moment(v).format("YYYY-MM-DD HH:mm:ss")
+  })
+  var vm=new Vue({
+    el:"#app",
+    data:{
+      msg:"信息",
+      time:0,
+      ischeck:true,
+      sex:"男"
+    },
+    methods:{
+      start:function(){
+        var that=this;
+        this.time = setInterval(()=>{
+          // console.log(that.msg);
+          that.msg=that.msg.slice(1)+that.msg.slice(0,1)
+        },200)
+      },
+      stop:function(){
+        // console.log(this);
+        clearInterval(this.time);
+      }
+    }
+  })
+  var tableview=new Vue({
+    el:"#tableview",
+    data:{
+      brandName:"",
+      searchValue:"",
+      list:[
+        {id:1,brandName:"张珊"},
+        {id:2,brandName:"李四"},
+        {id:3,brandName:"王五"},
+        {id:4,brandName:"刘静"},
+        {id:5,brandName:"赵倩"},
+      ],
+      items:[],
+      axiositems:[],
+      num1: 0,
+      num2: 0,
+      firstname:"",
+      lastname:"",
+      msg:"自定义指令",
+      nowdate:new Date()
+    },
+    methods:{
+      add(){
+        this.list.push({
+          id:this.list[this.list.length-1].id+1,
+          brandName:this.brandName,
+        });
+      },
+      del(id){
+        var single = this.list.filter(function(v){
+          return v.id === id;
+        })
+        var index = this.list.indexOf(single[0]);
+        this.list.splice(index,1);
+      },
+      search(){
+        var that = this;
+        return this.list.filter(function(v){
+          return v.brandName.indexOf(that.searchValue) !== -1;
+        })
+      },
+      decevent(){
+        console.log("触发自定义指令事件");
+      }
+    },
+    created(){
+      var that=this;
+      // console.log(that);
+      this.$http.get("./data.json").then(function(data){
+        that.items=data.body;
+        // console.log(that.items);
+      })
+      axios({
+        url:"./data.json",
+        methods:"get"
+      }).then(function(data){
+        // console.log(data);
+        that.axiositems=data.data;
+      })
+    },
+    computed:{
+      result(){
+        return +this.num1 + +this.num2
+      },
+      fullname:{
+        get(){ return this.firstname + '.' + this.lastname},
+        set(v){
+          this.firstname = v.split(".")[0];
+          this.lastname = v.split(".")[1];
+        }
+      }
+    },
+    directives:{
+      onevent:{
+        bind(el,binding){
+          el.addEventListener(binding.arg,function(e){
+            tableview.decevent();
+            e.stopPropagation();
+          })
+        }
+      }
+    }
+  })
+</script>
+</html>

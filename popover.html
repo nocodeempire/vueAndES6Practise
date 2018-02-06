@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="mui-master/mui-master/dist/css/mui.css">
+  <style>
+
+  </style>
+</head>
+<body>
+<!--<a href="#popover" >打开弹出菜单</a>-->
+<div id="popover" class="mui-popover">
+  <ul class="mui-table-view">
+    <li class="mui-table-view-cell"><a href="#">Item1</a></li>
+    <li class="mui-table-view-cell"><a href="#">Item2</a></li>
+    <li class="mui-table-view-cell"><a href="#">Item3</a></li>
+    <li class="mui-table-view-cell"><a href="#">Item4</a></li>
+    <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+  </ul>
+</div>
+</body>
+<script src="mui-master/mui-master/dist/js/mui.js"></script>
+<script>
+  mui('.mui-popover').popover('toggle',document.getElementById("openPopover"));
+</script>
+</html>

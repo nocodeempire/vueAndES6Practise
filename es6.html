@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  var test=(...a)=>console.log(a);
+  test(1,2,3)
+  
+  
+  var obj={
+    name:"adsa",
+    age:14
+  }
+  var obj1={...obj,sex:"男"}
+  console.log(obj1);
+  
+  //解构赋值
+  var {name:name1,age:age1}=obj;
+  console.log(name1);
+  
+  // class Person{
+  //   constructor(name,age){
+  //     this.name=name;
+  //     this.age=age
+  //   }
+  //   sayHi(){
+  //     console.log("Hello world");
+  //   }
+  // }
+  // var p = new Person("张三",13);
+  // console.log(p.name);
+  // console.log(p.sayHi());
+  
+  
+  
+//  继承
+//  es5
+//   function Person(name){
+//     this.name=name;
+//   }
+//   function Student(name,age){
+//     Person.call(this);
+//     this.age=age;
+//   }
+  
+  class Person{
+    constructor(name){
+      this.name=name
+    }
+  }
+  class Student extends Person{
+    constructor(name,age){
+      super(name);
+      this.age=age
+    }
+  }
+  var s = new Student("aa",12)
+  console.log(s);
+</script>
+</body>
+</html>

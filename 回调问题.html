@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  //1
+  function father(){
+    var aa = "11111";
+    (function(){
+      console.log(aa);
+    })()
+  }
+  father();   //正常打印11111
+  
+  
+  //2
+  function father(callback){
+    var aa = "11111";
+    callback();
+  }
+  father(function(){
+    console.log(aa);   //报错
+  })
+  
+  
+  
+  
+</script>
+</body>
+</html>

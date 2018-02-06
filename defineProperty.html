@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  var obj = {name:"zhangsan",age: "15"};
+  Object.defineProperty(obj,"yanzhi",{
+    // writable:true,
+    enumerable:true,
+    configurable:true,
+    // value:"9999",
+    get:function(){
+      return this._yanzhi;
+    },
+    set:function(value){
+      console.log(this);
+      this._yanzhi=value;
+    }
+  })
+  console.log(obj);
+</script>
+</body>
+</html>
