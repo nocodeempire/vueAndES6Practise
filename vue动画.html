@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="node_modules/animate.css/animate.css">
+  <style>
+    .fade{
+      width: 100px;
+      height: 100px;
+      background-color: pink;
+    }
+    .fade-enter, .fade-leave-to{
+      opacity: 0;
+    }
+    .fade-enter-to, .fade-leave{
+      opacity: 1;
+    }
+    .fade-enter-active, .fade-leave-active{
+      transition:all 1s linear;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!--vue-->
+  <button @click="clickbtn">触发动画</button>
+  <transition name="fade">
+    <div class="fade" v-show="show"></div>
+  </transition>
+  
+  <!--调用animate.css-->
+  <button @click="show2=!show2">触发animate.css动画</button>
+  <transition enter-active-class="animated tada"
+              leave-active-class="animated bounceOutRight">
+    <div class="fade" v-show="show2"></div>
+  </transition>
+  
+  <!--js实现-->
+  <button @click="show3=!show3">触发js动画</button>
+  <transition @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
+    <div class="fade" v-show="show3"></div>
+  </transition>
+</div>
+</body>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+  var vm = new Vue({
+    el:"#app",
+    data:{
+      show:true,
+      show2:true,
+      show3:true
+    },
+    methods:{
+      clickbtn(){
+        this.show= !this.show
+      },
+      beforeEnter(el){
+        el.style.marginLeft="-200px"
+      },
+      enter(el){
+        //触发重绘 不然不起效果
+        el.offsetWidth;
+        el.style.transition="all 1s";
+        el.style.marginLeft=0
+      },
+      
+      beforeLeave(el){
+        // el.style.marginLeft=0
+      },
+      leave(el){
+        // el.style.transition="all 1s";
+        // el.style.marginLeft="200px"
+      },
+    }
+  })
+</script>
+</html>
