@@ -24,6 +24,7 @@
 <body>
 <div id="app">
   <mycomp></mycomp>
+  <component :is="current"></component>
 </div>
 </body>
 <script src="node_modules/vue/dist/vue.js"></script>
@@ -36,13 +37,22 @@
       }
     }
   })
+  
   var vm = new Vue({
     el:"#app",
     data:{
-    
+      current:location.hash.slice(2) || "index"
     },
     methods:{
     
+    },
+    components:{
+      index:{
+        template:`<div>首页</div>`
+      },
+      login:{
+        template:`<div>登录</div>`
+      }
     }
   })
 </script>
