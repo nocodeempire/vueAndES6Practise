@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="node_modules/animate.css/animate.css">
+  <style>
+    .fade{
+      width: 100px;
+      height: 100px;
+      background-color: pink;
+    }
+    .fade-enter, .fade-leave-to{
+      opacity: 0;
+    }
+    .fade-enter-to, .fade-leave{
+      opacity: 1;
+    }
+    .fade-enter-active, .fade-leave-active{
+      transition:all 1s linear;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <mycomp></mycomp>
+</div>
+</body>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+  Vue.component("mycomp",{
+    template:`<div>组件-----------{{msg}}</div>`,
+    data(){
+      return {
+        msg:"数据"
+      }
+    }
+  })
+  var vm = new Vue({
+    el:"#app",
+    data:{
+    
+    },
+    methods:{
+    
+    }
+  })
+</script>
+</html>
